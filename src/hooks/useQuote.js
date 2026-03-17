@@ -12,7 +12,7 @@ const fetcher = url => fetch(url).then(r => r.json())
 
 export function useQuote() {
   const { data, error } = useSWR(
-    'https://zenquotes.io/api/today',
+    '/api/quotes/today',
     fetcher,
     {
       refreshInterval: 24 * 60 * 60 * 1000, // 24 hours

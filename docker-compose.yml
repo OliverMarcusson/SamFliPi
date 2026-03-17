@@ -5,6 +5,9 @@ services:
     restart: unless-stopped
     ports:
       - "3000:80"
+    environment:
+      EVENTS_API_SECRET: ${EVENTS_API_SECRET}
+      MUNIN_BASE_URL: ${MUNIN_BASE_URL:-https://munin-sou.se}
     volumes:
       - ./config.json:/config/config.json:ro
       - system_data:/system:ro

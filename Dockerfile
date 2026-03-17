@@ -13,7 +13,9 @@ FROM nginx:1.27-alpine
 # Remove default config
 RUN rm /etc/nginx/conf.d/default.conf
 
-COPY nginx.conf /etc/nginx/conf.d/samflip.conf
+ENV NGINX_ENVSUBST_FILTER="EVENTS_API_SECRET|MUNIN_BASE_URL"
+
+COPY nginx.conf /etc/nginx/templates/samflip.conf.template
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 EXPOSE 80

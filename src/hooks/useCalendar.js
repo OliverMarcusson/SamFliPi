@@ -24,7 +24,7 @@ function buildUrl(config) {
     limit: '20',
   })
 
-  return `${config.eventsApi.url}?${params.toString()}`
+  return `/api/munin/events/upcoming?${params.toString()}`
 }
 
 function fetcher(url, token) {
@@ -49,12 +49,11 @@ function getEventDate(event) {
 export function useCalendar() {
   const config = useConfig()
   const url = buildUrl(config)
-  const token = import.meta.env.VITE_EVENTS_API_TOKEN?.trim()
 
   const { data } = useSWR(
-    url && token ? [url, token] : null,
-    ([requestUrl, authToken]) => fetcher(requestUrl, authToken),
-    { refreshInterval: 5 * 60 * 1000, revalidateOnFocus: false },
+    url,
+    requestUrl => fetcher(requestUrl),
+    { refreshInterval: 60 * 1000, revalidateOnFocus: false },
   )
 
   return useMemo(() => {
