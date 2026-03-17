@@ -55,7 +55,7 @@ export default function CalendarWidget() {
                     const cs = getColorStyles(ev.color)
                     return (
                       <div
-                        key={i}
+                        key={ev.id ?? `${ev.date}-${ev.time ?? 'all-day'}-${ev.title}-${i}`}
                         className="flex items-center gap-3 rounded-xl px-3 py-2"
                         style={{ background: cs.bg, border: `1px solid ${cs.border}` }}
                       >
@@ -65,7 +65,7 @@ export default function CalendarWidget() {
                             {ev.title}
                           </div>
                         </div>
-                        {ev.time && (
+                        {!ev.allDay && ev.time && (
                           <div style={{ color: 'var(--secondary)', fontSize: '0.78rem', fontFamily: 'JetBrains Mono, monospace', flexShrink: 0 }}>
                             {ev.time}
                           </div>

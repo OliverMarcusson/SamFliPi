@@ -1,15 +1,32 @@
 {
-  "location": { "latitude": 59.6361, "longitude": 17.0777, "name": "Enköping, Sweden" },
-  "weather": { "unit": "celsius", "windUnit": "kmh" },
-  "news": { "feedUrl": "https://feeds.bbci.co.uk/news/rss.xml" },
-  "events": [
-    { "title": "Team Meeting", "date": "2026-03-18", "time": "10:00", "color": "blue" },
-    { "title": "Dentist Appointment", "date": "2026-03-20", "time": "14:30", "color": "rose" },
-    { "title": "Grocery Run", "date": "2026-03-22", "time": "09:00", "color": "emerald" }
-  ],
+  "location": {
+    "latitude": 59.6361,
+    "longitude": 17.0777,
+    "name": "Enköping, Sweden"
+  },
+  "weather": {
+    "unit": "celsius",
+    "windUnit": "kmh"
+  },
+  "news": {
+    "feedUrl": "https://www.dn.se/rss/"
+  },
+  "eventsApi": {
+    "url": "https://munin-sou.se/api/v1/events/upcoming"
+  },
+  "events": [],
   "countdowns": [
-    { "label": "Summer Holiday", "date": "2026-07-15" },
-    { "label": "Birthday", "date": "2026-05-01" }
+    {
+      "label": "Summer Holiday",
+      "date": "2026-07-15"
+    },
+    {
+      "label": "Birthday",
+      "date": "2026-05-01"
+    }
   ],
-  "display": { "use24Hour": true, "showSeconds": true }
+  "display": {
+    "use24Hour": true,
+    "showSeconds": true
+  }
 }
