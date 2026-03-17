@@ -17,27 +17,10 @@ services:
     restart: unless-stopped
     volumes:
       - system_data:/system
-    command: >
-      sh -c "
-        apk add --no-cache procps util-linux sysstat &&
-        while true; do
-          CPU_LOAD=$$(top -bn1 | grep 'Cpu(s)' | awk '{print $2}' | tr -d '%us,');
-          [ -z \"$$CPU_LOAD\" ] && CPU_LOAD=$$(grep 'cpu ' /proc/stat | awk '{u=$$2+$$4; t=$$2+$$3+$$4+$$5; if(t>0) printf \"%.1f\", u/t*100; else print 0}');
-          CPU_TEMP=$$(cat /sys/class/thermal/thermal_zone0/temp 2>/dev/null || echo 0);
-          CPU_TEMP=$$(echo \"$$CPU_TEMP\" | awk '{printf \"%.1f\", $$1/1000}');
-          MEM_TOTAL=$$(grep MemTotal /proc/meminfo | awk '{print $$2}');
-          MEM_AVAIL=$$(grep MemAvailable /proc/meminfo | awk '{print $$2}');
-          MEM_PCT=$$(awk \"BEGIN{printf \\\"%.1f\\\", (1 - $$MEM_AVAIL/$$MEM_TOTAL)*100}\");
-          DISK_INFO=$$(df / | tail -1 | awk '{print $$3, $$4}');
-          DISK_USED=$$(echo $$DISK_INFO | awk '{print $$1}');
-          DISK_AVAIL=$$(echo $$DISK_INFO | awk '{print $$2}');
-          DISK_PCT=$$(awk \"BEGIN{printf \\\"%.1f\\\", $$DISK_USED/($$DISK_USED+$$DISK_AVAIL)*100}\");
-          printf '{\"cpu_load\":%s,\"cpu_temp\":%s,\"mem_pct\":%s,\"disk_pct\":%s,\"updated\":\"%s\"}\n' \
-            \"$$CPU_LOAD\" \"$$CPU_TEMP\" \"$$MEM_PCT\" \"$$DISK_PCT\" \"$$(date -Iseconds)\" > /system/system.json.tmp;
-          mv /system/system.json.tmp /system/system.json;
-          sleep 5;
-        done
-      "
+      - ./monitor/monitor.sh:/monitor.sh:ro   # the collector script
+      - /sys/class/thermal:/sys/class/thermal:ro  # CPU temperature (Pi sysfs)
+      - /:/host:ro                                # host filesystem for disk stats
+    command: ["/bin/sh", "/monitor.sh"]
 
 volumes:
   system_data:

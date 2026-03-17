@@ -13,8 +13,8 @@ export function ConfigProvider({ children }) {
         console.error('Failed to load config.json:', err)
         // Minimal fallback
         setConfig({
-          location: { latitude: 51.5074, longitude: -0.1278, name: 'London' },
-          weather: { unit: 'celsius', windUnit: 'mph' },
+          location: { latitude: 59.6361, longitude: 17.0777, name: 'Enköping, Sweden' },
+          weather: { unit: 'celsius', windUnit: 'kmh' },
           news: { feedUrl: 'https://feeds.bbci.co.uk/news/rss.xml' },
           events: [],
           countdowns: [],
