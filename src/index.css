@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Dark theme (default) ────────────────────────────────── */
+:root,
+[data-theme="dark"] {
+  --bg:                #0a0a0f;
+  --card-bg:           rgba(255, 255, 255, 0.04);
+  --card-border:       rgba(255, 255, 255, 0.08);
+  --inset-bg:          rgba(255, 255, 255, 0.03);
+  --inset-border:      rgba(255, 255, 255, 0.05);
+  --track-bg:          rgba(255, 255, 255, 0.06);
+  --dot-inactive:      rgba(255, 255, 255, 0.10);
+  --primary:           #f0f0f8;
+  --secondary:         #8888aa;
+  --label:             #4a4a6a;
+
+  --accent-clock:      #93c5fd;
+  --accent-clock-dim:  #6b8fc4;
+  --accent-weather:    #67e8f9;
+  --accent-calendar:   #6ee7b7;
+  --accent-moon:       #c4b5fd;
+  --accent-moon-dim:   #6b5a8e;
+  --accent-quote:      #c4b5fd;
+  --accent-quote-dim:  #6b5a8e;
+  --accent-quote-border: rgba(196, 181, 253, 0.30);
+}
+
+/* ── Light theme ─────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg:                #e8ecf5;
+  --card-bg:           rgba(255, 255, 255, 0.72);
+  --card-border:       rgba(0, 0, 0, 0.08);
+  --inset-bg:          rgba(0, 0, 0, 0.04);
+  --inset-border:      rgba(0, 0, 0, 0.07);
+  --track-bg:          rgba(0, 0, 0, 0.08);
+  --dot-inactive:      rgba(0, 0, 0, 0.12);
+  --primary:           #0d0d1a;
+  --secondary:         #555577;
+  --label:             #8888aa;
+
+  --accent-clock:      #2563eb;
+  --accent-clock-dim:  #3b82f6;
+  --accent-weather:    #0891b2;
+  --accent-calendar:   #059669;
+  --accent-moon:       #7c3aed;
+  --accent-moon-dim:   #8b5cf6;
+  --accent-quote:      #7c3aed;
+  --accent-quote-dim:  #8b5cf6;
+  --accent-quote-border: rgba(124, 58, 237, 0.25);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  background-color: var(--bg);
+  color: var(--primary);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  cursor: none;
+  overflow: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+::-webkit-scrollbar { display: none; }
+
+/* Fade transition for news carousel */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}

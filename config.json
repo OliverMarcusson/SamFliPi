@@ -1,0 +1,15 @@
+{
+  "location": { "latitude": 51.5074, "longitude": -0.1278, "name": "London" },
+  "weather": { "unit": "celsius", "windUnit": "mph" },
+  "news": { "feedUrl": "https://feeds.bbci.co.uk/news/rss.xml" },
+  "events": [
+    { "title": "Team Meeting", "date": "2026-03-18", "time": "10:00", "color": "blue" },
+    { "title": "Dentist Appointment", "date": "2026-03-20", "time": "14:30", "color": "rose" },
+    { "title": "Grocery Run", "date": "2026-03-22", "time": "09:00", "color": "emerald" }
+  ],
+  "countdowns": [
+    { "label": "Summer Holiday", "date": "2026-07-15" },
+    { "label": "Birthday", "date": "2026-05-01" }
+  ],
+  "display": { "use24Hour": true, "showSeconds": true }
+}
