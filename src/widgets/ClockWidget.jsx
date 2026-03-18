@@ -22,21 +22,47 @@ export default function ClockWidget() {
       <div
         className="font-sans tracking-tighter leading-none select-none"
         style={{
+          display: 'inline-flex',
+          alignItems: 'baseline',
+          justifyContent: 'center',
           fontSize: 'clamp(72px, 14vw, 120px)',
           fontWeight: 200,
           color: 'var(--accent-clock)',
           fontFamily: "'DM Sans', sans-serif",
           letterSpacing: '-0.04em',
+          fontVariantNumeric: 'tabular-nums lining-nums',
         }}
       >
-        {hh}:{mm}
+        <span>{hh}:{mm}</span>
         {showSeconds && (
-          <span style={{ fontSize: '0.45em', fontWeight: 300, color: 'var(--accent-clock-dim)', marginLeft: '0.15em', verticalAlign: 'middle' }}>
+          <span
+            style={{
+              display: 'inline-block',
+              width: '2ch',
+              textAlign: 'left',
+              fontSize: '0.45em',
+              fontWeight: 300,
+              color: 'var(--accent-clock-dim)',
+              marginLeft: '0.15em',
+              verticalAlign: 'middle',
+              fontVariantNumeric: 'tabular-nums lining-nums',
+            }}
+          >
             {ss}
           </span>
         )}
         {ampm && (
-          <span style={{ fontSize: '0.3em', fontWeight: 300, color: 'var(--accent-clock-dim)', marginLeft: '0.2em' }}>
+          <span
+            style={{
+              display: 'inline-block',
+              width: '2.5ch',
+              textAlign: 'left',
+              fontSize: '0.3em',
+              fontWeight: 300,
+              color: 'var(--accent-clock-dim)',
+              marginLeft: '0.2em',
+            }}
+          >
             {ampm}
           </span>
         )}
