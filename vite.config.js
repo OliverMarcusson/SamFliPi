@@ -18,6 +18,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const muninBaseUrl = env.MUNIN_BASE_URL || 'https://munin-sou.se'
   const eventsApiSecret = env.EVENTS_API_SECRET || ''
+  const nowPlayingReceiverUrl = env.NOW_PLAYING_RECEIVER_URL || 'http://localhost:8787'
 
   return {
     plugins: [react()],
@@ -40,6 +41,11 @@ export default defineConfig(({ mode }) => {
           '/api/v1/cyber/quotes/random',
           eventsApiSecret,
         ),
+        '/api/now-playing': {
+          target: nowPlayingReceiverUrl,
+          changeOrigin: true,
+          secure: false,
+        },
       },
     },
   }

@@ -19,6 +19,9 @@
   --accent-clock:      #93c5fd;
   --accent-clock-dim:  #6b8fc4;
   --accent-weather:    #67e8f9;
+  --accent-now-playing: #34d399;
+  --accent-now-playing-dim: #a7f3d0;
+  --accent-now-playing-track: rgba(52, 211, 153, 0.25);
   --accent-calendar:   #6ee7b7;
   --accent-moon:       #c4b5fd;
   --accent-moon-dim:   #6b5a8e;
@@ -43,6 +46,9 @@
   --accent-clock:      #2563eb;
   --accent-clock-dim:  #3b82f6;
   --accent-weather:    #0891b2;
+  --accent-now-playing: #059669;
+  --accent-now-playing-dim: #047857;
+  --accent-now-playing-track: rgba(5, 150, 105, 0.18);
   --accent-calendar:   #059669;
   --accent-moon:       #7c3aed;
   --accent-moon-dim:   #8b5cf6;
@@ -78,4 +84,11 @@ html, body, #root {
 
 .fade-in {
   animation: fadeIn 0.5s ease forwards;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

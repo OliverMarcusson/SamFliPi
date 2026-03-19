@@ -11,8 +11,10 @@ services:
     volumes:
       - ./config.json:/config/config.json:ro
       - system_data:/system:ro
+      - now_playing_data:/now-playing:ro
     depends_on:
       - samflip_monitor
+      - samflip_now_playing_receiver
 
   samflip_monitor:
     image: alpine:3.20
@@ -25,5 +27,25 @@ services:
       - /:/host:ro                                # host filesystem for disk stats
     command: ["/bin/sh", "/monitor.sh"]
 
+  samflip_now_playing_receiver:
+    build:
+      context: .
+      dockerfile: receiver/Dockerfile
+    container_name: samflip_now_playing_receiver
+    restart: unless-stopped
+    ports:
+      - "8787:8787"
+    environment:
+      NOW_PLAYING_HOST: 0.0.0.0
+      NOW_PLAYING_PORT: 8787
+      NOW_PLAYING_STATE_PATH: /data/now-playing-state.json
+      NOW_PLAYING_WEBAPP_STATE_PATH: /shared/now-playing.json
+      NOW_PLAYING_LOG_LEVEL: INFO
+    volumes:
+      - now_playing_receiver_data:/data
+      - now_playing_data:/shared
+
 volumes:
   system_data:
+  now_playing_data:
+  now_playing_receiver_data:
