@@ -14,23 +14,10 @@ function createMuninProxy(target, path, secret) {
   }
 }
 
-function createProxy(target, path) {
-  return {
-    target,
-    changeOrigin: true,
-    secure: false,
-    rewrite: () => path,
-    headers: {
-      Accept: 'application/json',
-    },
-  }
-}
-
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const muninBaseUrl = env.MUNIN_BASE_URL || 'https://munin-sou.se'
   const eventsApiSecret = env.EVENTS_API_SECRET || ''
-  const quotesBaseUrl = 'https://zenquotes.io'
 
   return {
     plugins: [react()],
@@ -48,9 +35,10 @@ export default defineConfig(({ mode }) => {
           '/api/v1/cyber/announcements/latest',
           eventsApiSecret,
         ),
-        '/api/quotes/today': createProxy(
-          quotesBaseUrl,
-          '/api/today',
+        '/api/munin/cyber/quotes/random': createMuninProxy(
+          muninBaseUrl,
+          '/api/v1/cyber/quotes/random',
+          eventsApiSecret,
         ),
       },
     },
