@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import useSWR from 'swr'
 
 const FALLBACK_QUOTES = [
@@ -28,16 +29,40 @@ async function fetcher(url) {
   return data.quote ?? null
 }
 
+function getMsUntilNextFiveMinuteMark(now = new Date()) {
+  const next = new Date(now)
+  next.setSeconds(0, 0)
+  const minutesToAdd = now.getMinutes() % 5 === 0 ? 5 : 5 - (now.getMinutes() % 5)
+  next.setMinutes(now.getMinutes() + minutesToAdd)
+  return next.getTime() - now.getTime()
+}
+
 export function useQuote() {
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading, mutate } = useSWR(
     '/api/munin/cyber/quotes/random',
     requestUrl => fetcher(requestUrl),
     {
-      refreshInterval: 10 * 60 * 1000,
       revalidateOnFocus: false,
       shouldRetryOnError: false,
     }
   )
+
+  useEffect(() => {
+    let timeoutId
+
+    const scheduleNextRefresh = () => {
+      timeoutId = window.setTimeout(() => {
+        void mutate()
+        scheduleNextRefresh()
+      }, getMsUntilNextFiveMinuteMark())
+    }
+
+    scheduleNextRefresh()
+
+    return () => {
+      window.clearTimeout(timeoutId)
+    }
+  }, [mutate])
 
   if (isLoading) {
     return { quote: '', author: '', isLoading: true }
