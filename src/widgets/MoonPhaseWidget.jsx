@@ -26,11 +26,11 @@ export default function MoonPhaseWidget() {
       <Card className="col-span-2 flex h-full flex-col py-5">
         <div className="mb-2 flex items-center gap-2">
           <ShieldAlert size={14} style={{ color: '#f87171' }} />
-          <span style={{ color: '#f87171', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+          <span style={{ color: '#f87171', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
             Cyber
           </span>
           {announcement?.createdAt && (
-            <span style={{ color: 'var(--label)', fontSize: '0.6rem', marginLeft: 'auto', fontFamily: 'JetBrains Mono, monospace' }}>
+            <span style={{ color: 'var(--label)', fontSize: '0.7rem', marginLeft: 'auto', fontFamily: 'JetBrains Mono, monospace' }}>
               {formatAnnouncementDate(announcement.createdAt)}
             </span>
           )}
@@ -38,19 +38,19 @@ export default function MoonPhaseWidget() {
 
         <div className="flex min-h-0 flex-1 flex-col justify-center">
           {isLoading && (
-            <div style={{ color: 'var(--label)', fontSize: '0.85rem' }}>Loading announcement…</div>
+            <div style={{ color: 'var(--label)', fontSize: '0.95rem' }}>Loading announcement…</div>
           )}
 
           {!isLoading && !isConfigured && (
-            <div style={{ color: 'var(--label)', fontSize: '0.85rem' }}>Announcement feed not configured</div>
+            <div style={{ color: 'var(--label)', fontSize: '0.95rem' }}>Announcement feed not configured</div>
           )}
 
           {!isLoading && isConfigured && error && (
-            <div style={{ color: 'var(--label)', fontSize: '0.85rem' }}>Announcement unavailable</div>
+            <div style={{ color: 'var(--label)', fontSize: '0.95rem' }}>Announcement unavailable</div>
           )}
 
           {!isLoading && isConfigured && !error && !announcement && (
-            <div style={{ color: 'var(--label)', fontSize: '0.85rem' }}>No announcement published</div>
+            <div style={{ color: 'var(--label)', fontSize: '0.95rem' }}>No announcement published</div>
           )}
 
           {announcement && (
@@ -58,9 +58,9 @@ export default function MoonPhaseWidget() {
               <div
                 style={{
                   color: 'var(--primary)',
-                  fontSize: '0.95rem',
+                  fontSize: '1.1rem',
                   fontWeight: 500,
-                  lineHeight: 1.3,
+                  lineHeight: 1.35,
                   marginBottom: '0.35rem',
                   display: '-webkit-box',
                   WebkitLineClamp: 2,
@@ -74,9 +74,9 @@ export default function MoonPhaseWidget() {
               <div
                 style={{
                   color: 'var(--secondary)',
-                  fontSize: '0.78rem',
-                  fontWeight: 300,
-                  lineHeight: 1.4,
+                  fontSize: '0.95rem',
+                  fontWeight: 400,
+                  lineHeight: 1.5,
                   display: '-webkit-box',
                   WebkitLineClamp: 4,
                   WebkitBoxOrient: 'vertical',
@@ -86,7 +86,7 @@ export default function MoonPhaseWidget() {
                 {announcement.body}
               </div>
 
-              <div style={{ color: 'var(--label)', fontSize: '0.65rem', marginTop: 'auto', paddingTop: '0.75rem' }}>
+              <div style={{ color: 'var(--label)', fontSize: '0.75rem', marginTop: 'auto', paddingTop: '0.75rem' }}>
                 {announcement.author?.name ? `Posted by ${announcement.author.name}` : 'Cyber announcement board'}
               </div>
             </div>

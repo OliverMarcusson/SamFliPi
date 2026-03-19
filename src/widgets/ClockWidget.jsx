@@ -25,7 +25,7 @@ export default function ClockWidget() {
           display: 'inline-flex',
           alignItems: 'baseline',
           justifyContent: 'center',
-          fontSize: 'clamp(72px, 14vw, 120px)',
+          fontSize: 'clamp(90px, 17vw, 152px)',
           fontWeight: 200,
           color: 'var(--accent-clock)',
           fontFamily: "'DM Sans', sans-serif",
@@ -40,7 +40,7 @@ export default function ClockWidget() {
               display: 'inline-block',
               width: '2ch',
               textAlign: 'left',
-              fontSize: '0.45em',
+              fontSize: '0.5em',
               fontWeight: 300,
               color: 'var(--accent-clock-dim)',
               marginLeft: '0.15em',
@@ -57,7 +57,7 @@ export default function ClockWidget() {
               display: 'inline-block',
               width: '2.5ch',
               textAlign: 'left',
-              fontSize: '0.3em',
+              fontSize: '0.34em',
               fontWeight: 300,
               color: 'var(--accent-clock-dim)',
               marginLeft: '0.2em',
@@ -67,7 +67,7 @@ export default function ClockWidget() {
           </span>
         )}
       </div>
-      <div className="mt-2 font-sans" style={{ fontSize: '1.05rem', fontWeight: 300, color: 'var(--secondary)', letterSpacing: '0.04em' }}>
+      <div className="mt-3 font-sans" style={{ fontSize: '1.2rem', fontWeight: 300, color: 'var(--secondary)', letterSpacing: '0.04em' }}>
         {formatDate(now)}
       </div>
     </Card>
