@@ -2,12 +2,13 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import tempfile
 import unittest
 from pathlib import Path
 
 from receiver_service import HookRegistry, JsonStateStore, ReceiverApplication, WebappStatePublisher
-from receiver_service.state import ValidationError, normalize_now_playing_payload
+from receiver_service.state import SHARED_FILE_MODE, ValidationError, normalize_now_playing_payload
 
 
 TRACK_STARTED_PAYLOAD = {
@@ -97,6 +98,21 @@ class ReceiverServiceTests(unittest.TestCase):
             self.assertEqual(stored_state["track_id"], "spotify_track_id")
             self.assertEqual(app.get_state()["title"], "Song Title")
             self.assertEqual(published_state["spotify_uri"], "spotify:track:123")
+
+    def test_published_state_file_is_world_readable(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            store = JsonStateStore(temp_path / "state.json")
+            hooks = HookRegistry()
+            published_path = temp_path / "webapp.json"
+            hooks.register("publisher", WebappStatePublisher(published_path))
+
+            app = ReceiverApplication(store=store, hooks=hooks, logger=logging.getLogger("test"))
+            app.initialize()
+            app.ingest(TRACK_STARTED_PAYLOAD)
+
+            mode = os.stat(published_path).st_mode & 0o777
+            self.assertEqual(mode, SHARED_FILE_MODE)
 
 
 if __name__ == "__main__":

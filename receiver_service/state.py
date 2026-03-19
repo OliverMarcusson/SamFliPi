@@ -26,6 +26,8 @@ EMPTY_NOW_PLAYING_STATE = {
     "updated_at": None,
 }
 
+SHARED_FILE_MODE = 0o644
+
 
 class ValidationError(ValueError):
     pass
@@ -89,7 +91,9 @@ def atomic_write_json(path: Path, payload: dict[str, Any]) -> None:
         os.fsync(handle.fileno())
         temp_path = Path(handle.name)
 
+    os.chmod(temp_path, SHARED_FILE_MODE)
     temp_path.replace(path)
+    os.chmod(path, SHARED_FILE_MODE)
 
 
 def normalize_now_playing_payload(payload: Any, *, accepted_at: str | None = None) -> dict[str, Any]:

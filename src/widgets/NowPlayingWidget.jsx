@@ -3,6 +3,8 @@ import { Music2, PauseCircle, PlayCircle } from 'lucide-react'
 import Card from '../components/Card.jsx'
 import { useNowPlaying } from '../hooks/useNowPlaying.js'
 
+const TRACK_END_GRACE_MS = 3000
+
 function formatDuration(ms) {
   if (typeof ms !== 'number' || ms < 0) {
     return '0:00'
@@ -27,9 +29,23 @@ function getElapsedMs(state, nowMs) {
   return Math.max(0, Math.min(nowMs - startedAtMs, state.duration_ms))
 }
 
+function hasTrackExpired(state, nowMs) {
+  if (!state.is_playing || !state.started_at || typeof state.duration_ms !== 'number') {
+    return false
+  }
+
+  const startedAtMs = Date.parse(state.started_at)
+  if (Number.isNaN(startedAtMs)) {
+    return false
+  }
+
+  return nowMs > startedAtMs + state.duration_ms + TRACK_END_GRACE_MS
+}
+
 export default function NowPlayingWidget() {
   const { data, isLoading } = useNowPlaying()
   const [nowMs, setNowMs] = useState(() => Date.now())
+  const [coverFailed, setCoverFailed] = useState(false)
 
   useEffect(() => {
     const intervalId = window.setInterval(() => {
@@ -41,8 +57,14 @@ export default function NowPlayingWidget() {
     }
   }, [])
 
+  useEffect(() => {
+    setCoverFailed(false)
+  }, [data.cover_url])
+
+  const isExpired = hasTrackExpired(data, nowMs)
+  const isPlaying = data.is_playing && !isExpired
   const elapsedMs = getElapsedMs(data, nowMs)
-  const progress = data.is_playing && data.duration_ms ? Math.min((elapsedMs / data.duration_ms) * 100, 100) : 0
+  const progress = isPlaying && data.duration_ms ? Math.min((elapsedMs / data.duration_ms) * 100, 100) : 0
 
   if (isLoading && !data.updated_at) {
     return (
@@ -55,7 +77,7 @@ export default function NowPlayingWidget() {
     )
   }
 
-  if (!data.is_playing) {
+  if (!isPlaying) {
     return (
       <Card className="flex flex-col py-4">
         <WidgetHeader isPlaying={false} />
@@ -86,61 +108,71 @@ export default function NowPlayingWidget() {
   }
 
   return (
-    <Card className="flex items-center gap-4 overflow-hidden py-5">
-      <div
-        className="flex h-full max-h-[8.5rem] w-32 shrink-0 items-center justify-center overflow-hidden rounded-2xl"
-        style={{
-          background: 'linear-gradient(135deg, color-mix(in srgb, var(--accent-now-playing) 30%, transparent), var(--inset-bg))',
-          border: '1px solid var(--inset-border)',
-        }}
-      >
-        {data.cover_url ? (
-          <img
-            src={data.cover_url}
-            alt={data.album ?? data.title ?? 'Album cover'}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <Music2 size={40} style={{ color: 'var(--accent-now-playing-dim)' }} />
-        )}
-      </div>
+    <Card className="flex flex-col py-4">
+      <WidgetHeader isPlaying />
+      <div className="mt-4 flex min-h-0 flex-1 flex-col">
+        <div
+          className="flex min-h-0 flex-1 items-center gap-4"
+        >
+          <div
+            className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl"
+            style={{
+              background: 'linear-gradient(135deg, color-mix(in srgb, var(--accent-now-playing) 24%, transparent), var(--inset-bg))',
+              border: '1px solid var(--inset-border)',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.16)',
+            }}
+          >
+            {data.cover_url && !coverFailed ? (
+              <img
+                src={data.cover_url}
+                alt={data.album ?? data.title ?? 'Album cover'}
+                className="h-full w-full object-cover"
+                onError={() => setCoverFailed(true)}
+              />
+            ) : (
+              <Music2 size={32} style={{ color: 'var(--accent-now-playing)' }} />
+            )}
+          </div>
 
-      <div className="flex min-w-0 flex-1 flex-col justify-center gap-2">
-        <WidgetHeader isPlaying />
-        <div
-          className="line-clamp-2"
-          style={{
-            color: 'var(--primary)',
-            fontSize: '1.55rem',
-            fontWeight: 700,
-            lineHeight: 1.1,
-          }}
-        >
-          {data.title}
-        </div>
-        <div
-          className="line-clamp-2"
-          style={{
-            color: 'var(--accent-now-playing-dim)',
-            fontSize: '1rem',
-            fontWeight: 500,
-            lineHeight: 1.2,
-          }}
-        >
-          {data.artists.join(', ')}
-        </div>
-        <div
-          className="truncate"
-          style={{
-            color: 'var(--secondary)',
-            fontSize: '0.95rem',
-          }}
-        >
-          {data.album}
+          <div className="flex min-w-0 flex-1 flex-col justify-center">
+            <div
+              className="line-clamp-2"
+              style={{
+                color: 'var(--primary)',
+                fontSize: '1.65rem',
+                fontWeight: 700,
+                lineHeight: 1.08,
+              }}
+            >
+              {data.title}
+            </div>
+            <div
+              className="line-clamp-2"
+              style={{
+                color: 'var(--accent-now-playing-dim)',
+                fontSize: '0.98rem',
+                fontWeight: 500,
+                lineHeight: 1.25,
+                marginTop: '0.4rem',
+              }}
+            >
+              {data.artists.join(', ')}
+            </div>
+            <div
+              className="truncate"
+              style={{
+                color: 'var(--secondary)',
+                fontSize: '0.95rem',
+                marginTop: '0.35rem',
+              }}
+            >
+              {data.album}
+            </div>
+          </div>
         </div>
 
-        <div className="mt-1 flex items-center gap-3">
-          <span style={{ color: 'var(--secondary)', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.85rem' }}>
+        <div className="mt-4 flex items-center gap-3">
+          <span style={{ color: 'var(--secondary)', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.85rem', minWidth: 32 }}>
             {formatDuration(elapsedMs)}
           </span>
           <div className="flex-1 overflow-hidden rounded-full" style={{ height: 4, background: 'var(--track-bg)' }}>
@@ -154,7 +186,7 @@ export default function NowPlayingWidget() {
               }}
             />
           </div>
-          <span style={{ color: 'var(--secondary)', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.85rem' }}>
+          <span style={{ color: 'var(--secondary)', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.85rem', minWidth: 32, textAlign: 'right' }}>
             {formatDuration(data.duration_ms)}
           </span>
         </div>
