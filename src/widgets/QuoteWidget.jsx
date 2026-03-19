@@ -8,13 +8,13 @@ export default function QuoteWidget() {
   return (
     <Card className="flex flex-col justify-center py-5">
       {isLoading ? (
-        <div style={{ color: 'var(--label)', fontSize: '0.9rem', textAlign: 'center' }}>Loading…</div>
+        <div style={{ color: 'var(--label)', fontSize: '1.5rem', textAlign: 'center' }}>Loading…</div>
       ) : (
         <>
           <blockquote
             style={{
               color: 'var(--accent-quote)',
-              fontSize: '0.95rem',
+              fontSize: '1.5rem',
               fontStyle: 'italic',
               fontWeight: 300,
               lineHeight: 1.6,
@@ -24,7 +24,7 @@ export default function QuoteWidget() {
           >
             "{quote}"
           </blockquote>
-          <div style={{ color: 'var(--accent-quote-dim)', fontSize: '0.75rem', fontWeight: 500, marginTop: '0.6rem', textAlign: 'right' }}>
+          <div style={{ color: 'var(--accent-quote-dim)', fontSize: '1.5rem', fontWeight: 500, marginTop: '0.6rem', textAlign: 'right' }}>
             — {author}
           </div>
         </>
