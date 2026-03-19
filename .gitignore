@@ -6,3 +6,5 @@ dist/
 .env.*
 !.env.example
 .claude/
+__pycache__/
+*.pyc
