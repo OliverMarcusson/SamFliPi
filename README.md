@@ -1,4 +1,4 @@
-# SamFlip
+# SamFliPi
 
 <p align="center">
   <img src="./SamFliPi.png" alt="SamFlip banner" width="960" />
