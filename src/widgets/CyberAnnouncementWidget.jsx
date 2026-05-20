@@ -42,7 +42,7 @@ export default function CyberAnnouncementWidget() {
             <div
               style={{
                 color: 'var(--primary)',
-                fontSize: '1.02rem',
+                fontSize: '1.3rem',
                 fontWeight: 500,
                 lineHeight: 1.3,
                 marginBottom: '0.35rem',
@@ -58,7 +58,7 @@ export default function CyberAnnouncementWidget() {
             <div
               style={{
                 color: 'var(--secondary)',
-                fontSize: '0.88rem',
+                fontSize: '1.4rem',
                 fontWeight: 400,
                 lineHeight: 1.45,
                 display: '-webkit-box',
@@ -70,7 +70,7 @@ export default function CyberAnnouncementWidget() {
               {announcement.body}
             </div>
 
-            <div style={{ color: 'var(--label)', fontSize: '0.75rem', marginTop: 'auto', paddingTop: '0.65rem' }}>
+            <div style={{ color: 'var(--label)', fontSize: '1.0rem', marginTop: 'auto', paddingTop: '0.65rem' }}>
               {announcement.author?.name ? `Posted by ${announcement.author.name}` : 'Cyber announcement board'}
             </div>
           </div>
